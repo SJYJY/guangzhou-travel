@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>和宝宝的100天旅游 · 攻略</title>
+<script src="js/gate.js"></script>
+<link rel="stylesheet" href="css/style.css">
+<link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#c0392b"><link rel="icon" href="icons/icon.svg">
+<style>
+  body { background: #f6f3ef; height: auto; }
+  .wrap { max-width: 980px; margin: 0 auto; padding: 0 16px 50px; display: flex; gap: 24px; }
+  .toc { position: sticky; top: 16px; align-self: flex-start; width: 170px; flex: none; margin-top: 24px; font-size: 13px; }
+  .toc a { display: block; color: #555; text-decoration: none; padding: 5px 10px; border-left: 3px solid transparent; }
+  .toc a:hover { color: #c0392b; border-left-color: #c0392b; }
+  main { flex: 1; min-width: 0; }
+  .hero { margin: 24px 0 10px; padding: 26px 26px; border-radius: 14px; color: #fff; background: linear-gradient(120deg, rgba(192,57,43,.88), rgba(230,126,34,.8)), url(photos/huacheng_square.jpg) center/cover; }
+  .hero h1 { margin: 0 0 8px; font-size: 28px; }
+  .hero p { margin: 0; line-height: 1.8; opacity: .95; }
+  section { background: #fff; border-radius: 12px; padding: 18px 22px; margin: 16px 0; box-shadow: 0 1px 6px rgba(0,0,0,.05); }
+  section h2 { margin: 0 0 10px; font-size: 19px; }
+  section h3 { font-size: 15px; margin: 14px 0 6px; }
+  section p, section li { line-height: 1.85; font-size: 14px; color: #444; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th, td { border-bottom: 1px solid #eee; padding: 8px 6px; text-align: left; vertical-align: top; line-height: 1.6; }
+  th { background: #fafafa; }
+  .day { border-left: 5px solid #999; padding: 4px 0 4px 14px; margin: 14px 0; }
+  .day h3 { margin: 0 0 4px; }
+  .day .go { font-size: 13px; }
+  .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; }
+  .fcard { border-radius: 10px; overflow: hidden; background: #fafafa; border: 1px solid #eee; }
+  .fcard img { width: 100%; height: 130px; object-fit: cover; display: block; }
+  .fcard div { padding: 8px 10px; font-size: 13px; line-height: 1.6; color: #555; }
+  .fcard b { color: #222; }
+  .note { background: #fff8e1; border-radius: 8px; padding: 10px 14px; font-size: 13px; color: #7a5b00; line-height: 1.8; }
+  @media (max-width: 760px) { .toc { display: none; } .hero h1 { font-size: 22px; } }
+</style>
+</head>
+<body>
+<nav class="topnav">
+  <a class="brand" href="index.html">💕 和宝宝的100天旅游</a>
+  <a class="nav" href="index.html">🗺️ 地图</a>
+  <a class="nav on" href="guide.html">📖 攻略</a>
+  <a class="nav" href="weather.html">🌤️ 天气</a>
+  <a class="nav" href="gallery.html">📷 图集</a>
+</nav>
+<div class="wrap">
+  <aside class="toc">
+    <a href="#about">广州速览</a><a href="#season">什么时候去</a><a href="#arrive">怎么到达</a><a href="#traffic">市内交通</a>
+    <a href="#stay">住在哪里</a><a href="#plan">三天行程</a><a href="#food">吃什么</a><a href="#yumcha">早茶指南</a>
+    <a href="#cantonese">实用粤语</a><a href="#tips">注意事项</a><a href="#budget">预算参考</a>
+  </aside>
+  <main>
+    <div class="hero">
+      <h1>第一次来广州？看这一页就够了</h1>
+      <p>两千多年没有挪过窝的老城，也是现代化的一线大都市。来广州，上午在西关骑楼里饮早茶，下午逛千年古道和岭南祠堂，晚上看珠江两岸灯光、吃一碗糖水。本攻略聚焦 <b>越秀、荔湾、天河</b> 三区，配合 <a href="index.html" style="color:#fff">地图</a> 使用效果更好。</p>
+    </div>
+
+    <section id="about"><h2>🏙️ 广州速览</h2>
+      <ul>
+        <li><b>别称：</b>羊城、花城、穗。越秀公园的五羊石像就是“羊城”传说的象征。</li>
+        <li><b>三个重点区：</b><span style="color:#2980b9">越秀</span> = 老城中心、历史文化；<span style="color:#e74c3c">荔湾</span> = 西关风情、早茶小吃；<span style="color:#27ae60">天河</span> = 新城 CBD、购物和夜景。广州塔在珠江南岸的海珠区，与天河花城广场隔江相望。</li>
+        <li><b>气候：</b>亚热带季风气候，夏长冬短，全年大部分时间温暖潮湿。</li>
+        <li><b>语言：</b>本地人讲粤语（广州话），普通话完全通用。</li>
+      </ul>
+    </section>
+
+    <section id="season"><h2>🌤️ 什么时候去</h2>
+      <p class="note">👉 已经定好日子？看 <a href="weather.html">未来 10 天天气 + 每天穿衣建议</a>，在地图「我的路线」里选好日期，还会提醒雨天、周一闭馆和日落时间。</p>
+      <table>
+        <tr><th>时间</th><th>体验</th><th>提醒</th></tr>
+        <tr><td>10–12 月</td><td>👍 最舒适，秋高气爽、少雨</td><td>10 月中下旬有秋季广交会，酒店价格会上涨</td></tr>
+        <tr><td>1–2 月</td><td>春节前有迎春花市，年味浓</td><td>偶有阴冷，带件外套</td></tr>
+        <tr><td>3–4 月</td><td>木棉花开（中山纪念堂、陵园一带）</td><td>“回南天”潮湿；4 月中下旬有春季广交会</td></tr>
+        <tr><td>5–9 月</td><td>荔枝季（6–7 月）、夏夜珠江很美</td><td>炎热多雨、有台风，防晒 + 随身带伞，行程多安排室内</td></tr>
+      </table>
+    </section>
+
+    <section id="arrive"><h2>✈️ 怎么到达</h2>
+      <table>
+        <tr><th>到达点</th><th>去市区</th></tr>
+        <tr><td>白云国际机场</td><td>地铁 3 号线（北延段）进市区，到体育西路约 1 小时；也可坐机场大巴或打车</td></tr>
+        <tr><td>广州南站（高铁）</td><td>地铁 2 号线直达公园前、海珠广场、越秀公园；7 号线、22 号线也可换乘</td></tr>
+        <tr><td>广州站</td><td>地铁 2、5 号线</td></tr>
+        <tr><td>广州东站</td><td>地铁 1、3 号线，到天河体育中心很近</td></tr>
+      </table>
+      <p class="note">出发前确认车票的到达站：广州有广州站、广州南站、广州东站、广州白云站等多个火车站，相距较远。</p>
+    </section>
+
+    <section id="traffic"><h2>🚇 市内交通</h2>
+      <ul>
+        <li><b>地铁最方便：</b>微信 / 支付宝搜索“广州地铁”乘车码即可刷码进站。三区之间基本 20–30 分钟可达。</li>
+        <li><b>常用线路：</b>1 号线串起陈家祠—公园前—东山口—体育西路；2 号线南北贯通越秀；3 号线连接天河与广州塔；6 号线串联荔湾、越秀、东山。</li>
+        <li><b>打车 / 网约车：</b>三五公里内很便宜，晚上或带老人小孩更省心。</li>
+        <li><b>步行 + 共享单车：</b>老城区（北京路、上下九、东山口）最适合步行慢逛。</li>
+        <li><b>珠江夜游：</b>天字码头、中大码头、广州塔码头等可以上船，晚上约 19:00–22:00 有班次，建议提前网上购票。</li>
+      </ul>
+    </section>
+
+    <section id="stay"><h2>🏨 住在哪里</h2>
+      <table>
+        <tr><th>区域</th><th>适合</th><th>特点</th></tr>
+        <tr><td>北京路 / 公园前（越秀）</td><td>第一次来、想步行逛老城</td><td>1、2 号线交汇，去哪都方便，吃饭选择多</td></tr>
+        <tr><td>上下九 / 陈家祠（荔湾）</td><td>吃货、想早起饮早茶</td><td>老西关氛围，价格相对实惠</td></tr>
+        <tr><td>珠江新城 / 体育西（天河）</td><td>看夜景、逛街、商务</td><td>高档酒店多，交通枢纽，价格偏高</td></tr>
+      </table>
+    </section>
+
+    <section id="plan"><h2>🗓️ 三天经典行程</h2>
+      <p>下面每条路线都可以点「在地图上看」查看具体路线、每段距离和用时。想自己调整？在地图页的「我的路线」里复制修改，或者用 <b>一键自动规划</b>。</p>
+      <div id="routeBlocks"></div>
+    </section>
+
+    <section id="food"><h2>🍜 吃什么</h2>
+      <p>“食在广州”不是一句空话。地图上 🍜 标记的都是本地口碑老店和小吃聚集地，可以在地图页筛选「美食」查看。按类别推荐：</p>
+      <div class="cards" id="foodCards"></div>
+      <h3>按时间段怎么吃</h3>
+      <ul>
+        <li><b>早上：</b>早茶（广州酒家、陶陶居、莲香楼、泮溪、惠如楼），或者街边肠粉 + 粥。</li>
+        <li><b>中午：</b>烧味饭（烧鹅、叉烧、白切鸡）、云吞面、牛腩粉。</li>
+        <li><b>下午：</b>糖水甜品——双皮奶、姜撞奶、杨枝甘露、芝麻糊（南信、文明路甜品街）。</li>
+        <li><b>晚上 / 宵夜：</b>粤菜馆、啫啫煲、潮汕砂锅粥，江边大排档。</li>
+      </ul>
+    </section>
+
+    <section id="yumcha"><h2>🫖 早茶指南（饮茶小白必看）</h2>
+      <ul>
+        <li><b>“一盅两件”：</b>一壶茶配两样点心，是老广饮茶的经典配置。</li>
+        <li><b>必点点心：</b>虾饺、干蒸烧卖、叉烧包、凤爪、排骨、肠粉、马拉糕、蛋挞、流沙包。</li>
+        <li><b>茶位费：</b>按人头收取，属于正常收费。</li>
+        <li><b>加水：</b>把茶壶盖掀开斜放，服务员就会来加水。</li>
+        <li><b>叩指礼：</b>别人给你倒茶时，用手指轻敲桌面两下表示感谢。</li>
+        <li><b>时间：</b>热门老字号周末 8 点前到，否则可能要排队一小时。</li>
+      </ul>
+    </section>
+
+    <section id="cantonese"><h2>🗣️ 实用粤语</h2>
+      <table>
+        <tr><th>粤语</th><th>大致读音</th><th>意思</th></tr>
+        <tr><td>唔该</td><td>m goi</td><td>谢谢 / 麻烦你（请人帮忙、问路、加水时用）</td></tr>
+        <tr><td>多谢</td><td>do je</td><td>谢谢（收到礼物、别人请客时用）</td></tr>
+        <tr><td>埋单</td><td>maai daan</td><td>结账</td></tr>
+        <tr><td>几多钱？</td><td>gei do chin</td><td>多少钱？</td></tr>
+        <tr><td>喺边度？</td><td>hai bin dou</td><td>在哪里？</td></tr>
+        <tr><td>好食！</td><td>hou sik</td><td>好吃！</td></tr>
+        <tr><td>靓仔 / 靓女</td><td>leng zai / leng neoi</td><td>帅哥 / 美女（广州常用的称呼）</td></tr>
+      </table>
+    </section>
+
+    <section id="tips"><h2>⚠️ 注意事项</h2>
+      <ul>
+        <li><b>博物馆提前预约：</b>广东省博物馆、南越王博物院等热门场馆一般要在官方公众号预约，且<b>很多博物馆周一闭馆</b>，出发前请以官方信息为准。</li>
+        <li><b>天气：</b>夏天的雨说来就来，带伞；室内空调很足，带件薄外套。</li>
+        <li><b>广州塔：</b>傍晚日落前 1 小时上塔最好，节假日建议提前网上购票。</li>
+        <li><b>节假日人流：</b>北京路、上下九、广州塔、珠江夜游在节假日会非常拥挤，能错峰就错峰。</li>
+        <li><b>城中村 / 老街：</b>东山口、新河浦、永庆坊有居民居住，拍照请注意安静和礼貌。</li>
+        <li><b>紧急电话：</b>报警 110、急救 120、火警 119，市民服务热线 12345。</li>
+      </ul>
+      <p class="note">本页信息为出行参考，开放时间、票价、店铺营业情况可能会变动，请出发前再确认。地图上的地点位置为近似坐标，导航时以高德地图为准。</p>
+    </section>
+
+    <section id="budget"><h2>💰 预算参考（每人每天）</h2>
+      <table>
+        <tr><th>类型</th><th>住宿</th><th>吃</th><th>交通</th><th>门票</th></tr>
+        <tr><td>穷游</td><td>100–200</td><td>60–100</td><td>10–20（地铁）</td><td>大部分景点免费或低价</td></tr>
+        <tr><td>舒适</td><td>300–500</td><td>150–250</td><td>30–60</td><td>广州塔、夜游另计</td></tr>
+        <tr><td>品质</td><td>600+</td><td>300+</td><td>打车为主</td><td>—</td></tr>
+      </table>
+      <p class="muted">单位：元，仅为粗略参考。</p>
+    </section>
+  </main>
+</div>
+<script src="js/common.js"></script>
+<script src="data/spots.js"></script>
+<script src="data/routes.js"></script>
+<script src="data/photos.js"></script>
+<script>
+const esc = GZ.esc;
+const box = document.getElementById("routeBlocks");
+(window.ROUTES || []).forEach(r => {
+  const d = document.createElement("div"); d.className = "day"; d.style.borderLeftColor = r.color;
+  d.innerHTML = `<h3 style="color:${r.color}">${esc(r.name)} <span class="muted">· ${esc(r.duration)}</span></h3>
+    <p style="margin:2px 0">${esc(r.summary)}</p>
+    <p style="margin:2px 0;font-size:13px">📍 ${r.stops.map(esc).join(" → ")}</p>
+    <ul>${r.tips.map(t => `<li>${esc(t)}</li>`).join("")}</ul>
+    <a class="go" href="index.html#route=${r.id}">🗺️ 在地图上看这条路线 →</a>`;
+  box.appendChild(d);
+});
+const foods = (window.PHOTOS || []).filter(p => p.group === "广州味道");
+document.getElementById("foodCards").innerHTML = foods.map(p => `<div class="fcard"><img src="${p.file}" loading="lazy" alt="${esc(p.title)}">
+  <div><b>${esc(p.title)}</b><br><span class="muted" style="font-size:10px">© ${esc(p.author)} · ${esc(p.license)}</span></div></div>`).join("");
+</script>
+</body>
+</html>

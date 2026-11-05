@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>和宝宝的100天旅游 · 地图</title>
+<script src="js/gate.js"></script>
+<link rel="stylesheet" href="lib/leaflet.css">
+<link rel="stylesheet" href="css/style.css">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#c0392b">
+<link rel="icon" href="icons/icon.svg">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+</head>
+<body>
+<nav class="topnav">
+  <a class="brand" href="index.html">💕 和宝宝的100天旅游</a>
+  <a class="nav on" href="index.html">🗺️ 地图</a>
+  <a class="nav" href="guide.html">📖 攻略</a>
+  <a class="nav" href="weather.html">🌤️ 天气</a>
+  <a class="nav" href="gallery.html">📷 图集</a>
+  <span class="sub">荔湾 · 越秀 · 天河 ｜ 第一次来广州也心里有数</span>
+  <a class="wxmini" id="wxMini" href="weather.html">🌤️ …</a>
+</nav>
+
+<div id="app">
+  <aside id="side">
+    <div class="tabs">
+      <button data-tab="spots" class="on">📍 景点美食</button>
+      <button data-tab="routes">🧭 推荐路线</button>
+      <button data-tab="my">✏️ 我的路线</button>
+    </div>
+
+    <!-- 景点 & 美食 -->
+    <div class="panel on" id="panel_spots">
+      <div class="block"><h3>区域（双击定位）</h3><div class="chips" id="districtChips"></div></div>
+      <div class="block"><h3>类别</h3><div class="chips" id="catChips"></div></div>
+      <div class="block">
+        <h3>搜索 / 标注新地点</h3>
+        <input type="text" id="q" placeholder="输入关键字筛选，回车在线搜索，如：沙面、肠粉…">
+        <div class="row">
+          <button class="primary" id="btnSearch">在线搜索地点</button>
+          <button id="btnAddMode">📍 点地图标注</button>
+        </div>
+        <div id="results"></div>
+      </div>
+      <div id="count"></div>
+      <div id="list"></div>
+      <div class="block">
+        <div class="row" style="margin-top:0">
+          <button id="btnExport">导出备份</button><button id="btnImport">导入备份</button><button id="btnReset">恢复默认地点</button>
+          <button id="btnOffline" title="部署成网站后可用">📥 缓存地图（离线用）</button>
+        </div>
+        <p class="muted" style="margin:6px 0 0">你的标注、收藏、路线都保存在本浏览器中，换设备前请先导出备份。</p>
+        <input type="file" id="fileInput" accept=".json" style="display:none">
+      </div>
+    </div>
+
+    <!-- 推荐路线 -->
+    <div class="panel" id="panel_routes">
+      <div class="block">
+        <p class="muted" style="margin:0 0 6px">精选 6 条路线，前三条可组成 <b>3 天经典行程</b>。虚线（点状）表示距离较远、建议坐地铁或打车的路段。</p>
+        <div class="row" style="margin-top:0"><button id="btnAllRoutes">显示全部路线图层</button><button id="btnNoRoutes">隐藏全部</button>
+          <a href="guide.html" style="font-size:12px;margin-left:auto">查看完整攻略 →</a></div>
+      </div>
+      <div id="routeList"></div>
+    </div>
+
+    <!-- 我的路线 -->
+    <div class="panel" id="panel_my">
+      <div class="block">
+        <h3>📅 出行日期 & 出发时间（自动带入天气、穿衣和时间表）</h3>
+        <div class="row" style="margin-top:0">
+          <select id="myDate"><option value="">不指定日期</option></select>
+          <input type="time" id="myStart" value="09:00" style="width:100px;padding:6px;border:1px solid #ccc;border-radius:6px">
+        </div>
+      </div>
+      <div class="block">
+        <h3>⚡ 一键自动规划</h3>
+        <div class="row" style="margin-top:0">
+          <select id="apArea"><option value="all">三区精华</option><option>越秀区</option><option>荔湾区</option><option>天河区</option></select>
+          <select id="apTime"><option value="240">半天（4 小时）</option><option value="360">轻松一天（6 小时）</option><option value="480" selected>一整天（8 小时）</option><option value="600">特种兵（10 小时）</option></select>
+        </div>
+        <div class="row">
+          <select id="apStart"><option value="auto">自动选择起点</option><option value="me">从我的位置出发</option></select>
+        </div>
+        <div class="row" style="font-size:12px">
+          <label><input type="checkbox" id="apFood" checked> 安排吃饭</label>
+          <label><input type="checkbox" id="apTop"> 只去必去景点</label>
+          <button class="primary" id="btnAuto" style="margin-left:auto">生成路线</button>
+        </div>
+      </div>
+      <div class="block">
+        <h3>当前路线</h3>
+        <input type="text" id="myName">
+        <div class="row">
+          <select id="myMode"><option value="foot">🚶 步行</option><option value="bike">🚲 骑行</option><option value="car">🚗 驾车</option></select>
+          <button id="btnMyOpt" title="按最短路程重新排序">🔀 优化顺序</button>
+          <label style="font-size:11px"><input type="checkbox" id="optKeepEnd">终点不变</label>
+        </div>
+        <div class="stops" id="myStops"></div>
+        <div id="myStatus" class="muted"></div>
+        <div id="mySummary"></div>
+        <div class="row">
+          <button class="primary" id="btnMySave">💾 保存</button><button id="btnMyShare">🔗 分享链接</button><button id="btnMyImg">🖼️ 导出图片</button>
+          <button id="btnMyFit">查看全程</button><button id="btnMyNew">新建</button><button id="btnMyClear">清空</button>
+        </div>
+      </div>
+      <div class="block"><h3>已保存的路线</h3><div id="savedList"></div></div>
+    </div>
+  </aside>
+  <div id="map"><div id="tip">点击地图任意位置标注新地点（再按一次按钮取消）</div></div>
+</div>
+<div id="toast"></div>
+
+<dialog id="dlg">
+  <form method="dialog">
+    <b id="dlgTitle">添加地点</b>
+    <label>名称</label><input type="text" id="fName" required>
+    <div class="row">
+      <div style="flex:1"><label>区域</label><select id="fDistrict"><option>荔湾区</option><option>越秀区</option><option>天河区</option><option>其他</option></select></div>
+      <div style="flex:1"><label>类别</label><select id="fCat"></select></div>
+    </div>
+    <div id="foodFields">
+      <label>推荐菜</label><input type="text" id="fDish" placeholder="如：虾饺、肠粉">
+      <label>人均（元）</label><input type="text" id="fPrice" placeholder="如：50–80">
+    </div>
+    <div class="row">
+      <div style="flex:1"><label>建议停留（分钟）</label><input type="text" id="fStay" placeholder="默认按类别"></div>
+      <label style="margin-top:22px"><input type="checkbox" id="fTop"> 🔥 必去</label>
+    </div>
+    <label>简介 / 备注 / 心得</label><textarea id="fDesc" rows="3"></textarea>
+    <div class="row" style="justify-content:flex-end;margin-top:12px">
+      <button value="cancel" formnovalidate>取消</button><button value="ok" class="primary">保存</button>
+    </div>
+  </form>
+</dialog>
+
+<script src="lib/leaflet.js"></script>
+<script src="js/common.js"></script>
+<script src="js/weather.js"></script>
+<script src="data/spots.js"></script>
+<script src="data/info.js"></script>
+<script src="data/routes.js"></script>
+<script src="data/photos.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

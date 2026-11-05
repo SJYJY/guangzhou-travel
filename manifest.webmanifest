@@ -1,0 +1,16 @@
+{
+  "name": "和宝宝的100天旅游",
+  "short_name": "宝宝100天旅游",
+  "description": "广州旅游地图、推荐路线、自定义行程、10 天天气与穿衣建议、美食与图集",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#fffaf3",
+  "theme_color": "#c0392b",
+  "lang": "zh-CN",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "icons/icon.svg", "sizes": "any", "type": "image/svg+xml" }
+  ]
+}

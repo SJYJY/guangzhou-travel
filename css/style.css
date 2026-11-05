@@ -1,0 +1,102 @@
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; font-family: "PingFang SC", "Microsoft YaHei", sans-serif; color: #222; }
+a { color: #c0392b; }
+
+/* ===== 顶部导航（三个页面共用） ===== */
+.topnav { height: 48px; display: flex; align-items: center; gap: 4px; padding: 0 14px; background: linear-gradient(135deg, #c0392b, #e67e22); color: #fff; position: relative; z-index: 1100; }
+.topnav .brand { font-weight: 700; font-size: 17px; margin-right: 16px; color: #fff; text-decoration: none; white-space: nowrap; }
+.topnav a.nav { color: #fff; text-decoration: none; padding: 6px 12px; border-radius: 16px; font-size: 14px; opacity: .9; white-space: nowrap; }
+.topnav a.nav:hover { background: rgba(255,255,255,.18); }
+.topnav a.nav.on { background: rgba(255,255,255,.28); opacity: 1; font-weight: 600; }
+.topnav .sub { margin-left: auto; font-size: 12px; opacity: .85; white-space: nowrap; }
+.topnav .wxmini { color: #fff; text-decoration: none; font-size: 13px; background: rgba(255,255,255,.2); padding: 4px 10px; border-radius: 14px; margin-left: 10px; white-space: nowrap; }
+@media (max-width: 900px) { .topnav .sub { display: none; } .topnav .wxmini { margin-left: auto; } }
+
+/* ===== 地图页布局 ===== */
+#app { display: flex; height: calc(100% - 48px); }
+#side { width: 360px; min-width: 360px; display: flex; flex-direction: column; background: #fafafa; border-right: 1px solid #ddd; }
+.tabs { display: flex; border-bottom: 1px solid #ddd; background: #fff; }
+.tabs button { flex: 1; border: none; border-radius: 0; background: none; padding: 10px 0; font-size: 14px; cursor: pointer; color: #666; border-bottom: 3px solid transparent; }
+.tabs button.on { color: #c0392b; border-bottom-color: #c0392b; font-weight: 600; }
+.panel { flex: 1; overflow: auto; display: none; }
+.panel.on { display: block; }
+#map { flex: 1; position: relative; }
+
+.block { padding: 10px 14px; border-bottom: 1px solid #eee; }
+.block h3 { margin: 0 0 6px; font-size: 13px; color: #666; font-weight: 600; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip { border: 1px solid #ccc; background: #fff; border-radius: 14px; padding: 3px 10px; font-size: 12px; cursor: pointer; user-select: none; }
+.chip.on { color: #fff; border-color: transparent; }
+input[type=text], select, textarea { width: 100%; padding: 7px 9px; border: 1px solid #ccc; border-radius: 6px; font-size: 13px; font-family: inherit; background: #fff; }
+.row { display: flex; gap: 6px; margin-top: 6px; flex-wrap: wrap; align-items: center; }
+.row > select { width: auto; flex: 1; }
+button { padding: 6px 10px; border: 1px solid #ccc; background: #fff; border-radius: 6px; font-size: 12px; cursor: pointer; font-family: inherit; }
+button:hover { background: #f0f0f0; }
+button.primary { background: #c0392b; color: #fff; border-color: #c0392b; }
+button.primary:hover { background: #a93226; }
+button.active { background: #27ae60; color: #fff; border-color: #27ae60; }
+button.mini { padding: 2px 6px; font-size: 11px; }
+.muted { color: #999; font-size: 12px; }
+
+#results { max-height: 180px; overflow: auto; margin-top: 6px; }
+#results div { padding: 5px 6px; font-size: 12px; border-bottom: 1px dashed #ddd; cursor: pointer; }
+#results div:hover { background: #fff3e0; }
+.item { display: flex; align-items: center; gap: 8px; padding: 7px 14px; cursor: pointer; font-size: 13px; }
+.item:hover { background: #fff3e0; }
+.item .meta { color: #999; font-size: 11px; margin-left: auto; white-space: nowrap; }
+.item .add { visibility: hidden; }
+.item:hover .add { visibility: visible; }
+.dot { width: 10px; height: 10px; border-radius: 50%; flex: none; }
+#count { font-size: 12px; color: #888; padding: 6px 14px 2px; }
+
+/* 推荐路线卡片 */
+.rcard { margin: 10px 12px; background: #fff; border: 1px solid #e5e5e5; border-left: 5px solid #999; border-radius: 8px; padding: 10px 12px; }
+.rcard h4 { margin: 0 0 4px; font-size: 15px; cursor: pointer; }
+.rcard .dur { font-size: 12px; color: #888; }
+.rcard p { font-size: 12px; color: #555; margin: 6px 0; line-height: 1.6; }
+.rcard ul { padding-left: 18px; margin: 6px 0; font-size: 12px; color: #555; line-height: 1.7; }
+.stops { margin: 6px 0; }
+.stop { display: flex; align-items: center; gap: 8px; font-size: 13px; padding: 4px 0; }
+.stop .n { width: 20px; height: 20px; border-radius: 50%; color: #fff; font-size: 11px; display: flex; align-items: center; justify-content: center; flex: none; }
+.stop .nm { cursor: pointer; flex: 1; }
+.stop .nm:hover { text-decoration: underline; }
+.leg { margin-left: 9px; padding: 2px 0 2px 18px; border-left: 2px dashed #ccc; font-size: 11px; color: #888; display: flex; gap: 6px; align-items: center; }
+.leg.far { color: #d35400; }
+.leg a { font-size: 11px; color: #2980b9; text-decoration: none; }
+.summary { background: #fff8e1; border-radius: 6px; padding: 8px 10px; font-size: 12px; margin-top: 8px; line-height: 1.7; }
+.saved { display: flex; align-items: center; gap: 6px; padding: 6px 0; border-bottom: 1px dashed #eee; font-size: 13px; }
+.saved span { flex: 1; }
+
+/* 地图标记 */
+.pin { width: 26px; height: 26px; border-radius: 50% 50% 50% 0; transform: rotate(-45deg); border: 2px solid #fff; box-shadow: 0 1px 4px rgba(0,0,0,.4); display: flex; align-items: center; justify-content: center; }
+.pin span { transform: rotate(45deg); font-size: 12px; }
+.pin.food { border-radius: 50%; transform: none; width: 24px; height: 24px; border-color: #f39c12; }
+.pin.food span { transform: none; }
+.pin.fav { box-shadow: 0 0 0 3px #f1c40f, 0 1px 4px rgba(0,0,0,.4); }
+.num { width: 24px; height: 24px; border-radius: 50%; color: #fff; font-weight: 700; font-size: 12px; display: flex; align-items: center; justify-content: center; border: 2px solid #fff; box-shadow: 0 1px 4px rgba(0,0,0,.5); }
+.label { background: rgba(255,255,255,.85); border: none; box-shadow: none; font-size: 11px; padding: 1px 4px; color: #333; }
+.label::before { display: none; }
+.pop { min-width: 220px; }
+.pop img { width: 100%; max-height: 140px; object-fit: cover; border-radius: 6px; margin-bottom: 6px; cursor: pointer; }
+.pop h4 { margin: 0 0 4px; font-size: 15px; }
+.pop .tag { display: inline-block; font-size: 11px; padding: 1px 6px; border-radius: 8px; color: #fff; margin-right: 4px; }
+.pop p { margin: 6px 0; font-size: 12px; color: #555; }
+.pop .ops { display: flex; gap: 4px; flex-wrap: wrap; }
+.pop .ops button { padding: 3px 7px; font-size: 11px; }
+.locbtn { background: #fff; width: 34px; height: 34px; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 18px; cursor: pointer; box-shadow: 0 1px 5px rgba(0,0,0,.4); }
+.me { width: 16px; height: 16px; border-radius: 50%; background: #2980b9; border: 3px solid #fff; box-shadow: 0 0 0 6px rgba(41,128,185,.3); }
+
+#tip { position: absolute; top: 10px; left: 50%; transform: translateX(-50%); z-index: 1000; background: #27ae60; color: #fff; padding: 6px 14px; border-radius: 16px; font-size: 13px; display: none; }
+#toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); z-index: 3000; background: rgba(0,0,0,.8); color: #fff; padding: 8px 16px; border-radius: 18px; font-size: 13px; display: none; }
+dialog { border: none; border-radius: 10px; padding: 18px; width: 340px; box-shadow: 0 6px 30px rgba(0,0,0,.3); }
+dialog label { display: block; font-size: 12px; color: #666; margin: 8px 0 3px; }
+
+@media (max-width: 760px) {
+  .topnav .sub { display: none; }
+  .topnav .brand { font-size: 15px; margin-right: 6px; }
+  .topnav { overflow-x: auto; }
+  .topnav a.nav { padding: 6px 8px; font-size: 13px; }
+  #app { flex-direction: column-reverse; }
+  #side { width: 100%; min-width: 0; height: 50%; }
+  #map { height: 50%; flex: none; }
+}

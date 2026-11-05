@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>和宝宝的100天旅游 · 天气</title>
+<script src="js/gate.js"></script>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#c0392b">
+<link rel="icon" href="icons/icon.svg">
+<link rel="stylesheet" href="css/style.css">
+<style>
+  body { background: #eef3f8; height: auto; }
+  .wrap { max-width: 1100px; margin: 0 auto; padding: 18px 16px 50px; }
+  .hero { display: flex; gap: 16px; flex-wrap: wrap; }
+  .now, .best { background: linear-gradient(135deg, #2980b9, #6dd5fa); color: #fff; border-radius: 14px; padding: 18px 22px; flex: 1; min-width: 280px; }
+  .best { background: linear-gradient(135deg, #16a085, #f4d03f); }
+  .now .big { font-size: 54px; font-weight: 700; line-height: 1; }
+  .now .ic { font-size: 54px; float: right; }
+  .now p, .best p { margin: 6px 0; font-size: 14px; opacity: .95; }
+  .best h3, .now h3 { margin: 0 0 8px; font-size: 16px; }
+  .best .b { background: rgba(255,255,255,.25); border-radius: 8px; padding: 6px 10px; margin: 5px 0; font-size: 14px; cursor: pointer; }
+  .box { background: #fff; border-radius: 12px; padding: 14px 18px; margin-top: 16px; box-shadow: 0 1px 6px rgba(0,0,0,.05); }
+  .box h2 { font-size: 17px; margin: 0 0 10px; }
+  .days { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+  .day { border: 2px solid #eee; border-radius: 10px; padding: 10px; text-align: center; cursor: pointer; background: #fcfdff; transition: .15s; }
+  .day:hover { border-color: #6dd5fa; }
+  .day.sel { border-color: #2980b9; background: #eaf5fd; }
+  .day .w { font-weight: 700; } .day .d { color: #999; font-size: 12px; }
+  .day .ic { font-size: 34px; margin: 4px 0; }
+  .day .t { font-size: 16px; } .day .t b { color: #e74c3c; } .day .t span { color: #2980b9; }
+  .day .r { font-size: 12px; color: #2980b9; margin-top: 2px; }
+  .lv { display: inline-block; font-size: 11px; padding: 1px 8px; border-radius: 8px; color: #fff; margin-top: 5px; }
+  .detail { display: grid; grid-template-columns: 1.2fr 1fr; gap: 18px; }
+  .detail h3 { margin: 4px 0 8px; font-size: 15px; }
+  .detail ul { padding-left: 18px; margin: 6px 0; line-height: 1.9; font-size: 14px; }
+  .wear { background: #fff8e1; border-radius: 8px; padding: 10px 12px; font-size: 14px; line-height: 1.7; }
+  .act { background: #e8f8f5; border-radius: 8px; padding: 10px 12px; font-size: 14px; line-height: 1.7; margin-top: 10px; }
+  .kv { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; font-size: 13px; margin-bottom: 10px; }
+  .kv div { background: #f5f8fb; border-radius: 8px; padding: 6px 8px; } .kv b { display: block; font-size: 16px; }
+  svg text { font-family: inherit; }
+  .note { color: #888; font-size: 12px; margin-top: 14px; line-height: 1.7; }
+  @media (max-width: 760px) { .detail { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<nav class="topnav">
+  <a class="brand" href="index.html">💕 和宝宝的100天旅游</a>
+  <a class="nav" href="index.html">🗺️ 地图</a>
+  <a class="nav" href="guide.html">📖 攻略</a>
+  <a class="nav on" href="weather.html">🌤️ 天气</a>
+  <a class="nav" href="gallery.html">📷 图集</a>
+</nav>
+<div class="wrap">
+  <div class="hero">
+    <div class="now" id="now"><h3>广州 · 现在</h3><p>天气加载中…</p></div>
+    <div class="best" id="best"><h3>🏆 未来 10 天最适合出游</h3></div>
+  </div>
+  <div class="box"><h2>🌡️ 10 天气温与降雨趋势</h2><div id="chart"></div></div>
+  <div class="box"><h2>📅 逐日预报（点击查看详情和穿衣建议）</h2><div class="days" id="days"></div></div>
+  <div class="box" id="detailBox"><div class="detail" id="detail"></div></div>
+  <p class="note">数据来源：<a href="https://open-meteo.com" target="_blank">Open-Meteo</a>，每小时更新；预报越往后越不准，出发前 1–2 天请再看一次。
+    穿衣建议按“体感温度”给出，仅供参考。<button id="refresh" class="mini">🔄 刷新</button></p>
+</div>
+<script src="js/common.js"></script>
+<script src="js/weather.js"></script>
+<script>
+const LV_COLOR = { "炎热": "#c0392b", "热": "#e67e22", "温暖": "#f1c40f", "舒适": "#27ae60", "微凉": "#16a085", "凉": "#2980b9", "冷": "#8e44ad" };
+let DAYS = [], sel = 0;
+
+function svgChart(days, w, h) {
+  const pad = { l: 30, r: 16, t: 26, b: 46 }, n = days.length, iw = w - pad.l - pad.r, ih = h - pad.t - pad.b;
+  const hi = Math.max(...days.map(d => d.tmax)) + 2, lo = Math.min(...days.map(d => d.tmin)) - 2;
+  const x = i => pad.l + (n === 1 ? iw / 2 : i * iw / (n - 1)), y = v => pad.t + (hi - v) / (hi - lo) * ih;
+  let s = `<svg viewBox="0 0 ${w} ${h}" width="100%" style="max-height:${h}px">`;
+  days.forEach((d, i) => { const bh = d.rain / 100 * ih * 0.5;
+    s += `<rect x="${x(i) - 12}" y="${pad.t + ih - bh}" width="24" height="${bh}" fill="#6dd5fa" opacity=".45" rx="3"/>`;
+    if (d.rain >= 20) s += `<text x="${x(i)}" y="${pad.t + ih - bh - 3}" font-size="10" fill="#2980b9" text-anchor="middle">${d.rain}%</text>`; });
+  const line = (k, c) => { s += `<polyline fill="none" stroke="${c}" stroke-width="3" points="${days.map((d, i) => x(i) + "," + y(d[k])).join(" ")}"/>`;
+    days.forEach((d, i) => { s += `<circle cx="${x(i)}" cy="${y(d[k])}" r="4" fill="#fff" stroke="${c}" stroke-width="2"/>
+      <text x="${x(i)}" y="${y(d[k]) + (k === "tmax" ? -9 : 17)}" font-size="12" fill="${c}" text-anchor="middle" font-weight="600">${d[k]}°</text>`; }); };
+  line("tmax", "#e74c3c"); line("tmin", "#2980b9");
+  days.forEach((d, i) => { s += `<text x="${x(i)}" y="${h - 26}" font-size="12" fill="#333" text-anchor="middle">${d.wd}</text>
+    <text x="${x(i)}" y="${h - 10}" font-size="13" text-anchor="middle">${d.icon}</text>`; });
+  s += `<text x="${pad.l}" y="14" font-size="11" fill="#999">— 最高温  — 最低温  ▮ 降雨概率</text></svg>`;
+  return s;
+}
+function hourlyChart(hs, w, h) {
+  if (!hs.length) return "";
+  const pad = { l: 26, r: 10, t: 18, b: 22 }, iw = w - pad.l - pad.r, ih = h - pad.t - pad.b;
+  const hi = Math.max(...hs.map(v => v.t)) + 1, lo = Math.min(...hs.map(v => v.t)) - 1;
+  const x = i => pad.l + i * iw / (hs.length - 1), y = v => pad.t + (hi - v) / (hi - lo) * ih;
+  let s = `<svg viewBox="0 0 ${w} ${h}" width="100%">`;
+  hs.forEach((v, i) => { const bh = (v.p || 0) / 100 * ih * 0.6; s += `<rect x="${x(i) - 5}" y="${pad.t + ih - bh}" width="10" height="${bh}" fill="#6dd5fa" opacity=".5"/>`; });
+  s += `<polyline fill="none" stroke="#e67e22" stroke-width="2.5" points="${hs.map((v, i) => x(i) + "," + y(v.t)).join(" ")}"/>`;
+  hs.forEach((v, i) => { if (i % 3 === 0) s += `<text x="${x(i)}" y="${y(v.t) - 6}" font-size="10" fill="#e67e22" text-anchor="middle">${Math.round(v.t)}°</text>
+    <text x="${x(i)}" y="${h - 6}" font-size="10" fill="#666" text-anchor="middle">${v.h}时</text>`; });
+  return s + "</svg>";
+}
+function renderDays() {
+  document.getElementById("days").innerHTML = DAYS.map((d, i) => { const c = GZW.clothing(d);
+    return `<div class="day${i === sel ? " sel" : ""}" data-i="${i}"><div class="w">${d.wd}</div><div class="d">${d.md} ${i > 1 ? "" : d.week}</div>
+      <div class="ic">${d.icon}</div><div>${d.text}</div><div class="t"><b>${d.tmax}°</b> / <span>${d.tmin}°</span></div>
+      <div class="r">💧 ${d.rain}%</div><span class="lv" style="background:${LV_COLOR[c.level]}">${c.level}</span></div>`; }).join("");
+  document.querySelectorAll(".day").forEach(el => el.onclick = () => { sel = +el.dataset.i; renderDays(); renderDetail(); });
+}
+function renderDetail() {
+  const d = DAYS[sel], c = GZW.clothing(d);
+  document.getElementById("detail").innerHTML = `<div>
+      <h3>${d.wd} ${d.md}（${d.week}） ${d.icon} ${d.text} · ${d.tmin}–${d.tmax}°C</h3>
+      <div class="kv"><div>体感<b>${d.amin}–${d.amax}°</b></div><div>降雨概率<b>${d.rain}%</b></div><div>降水量<b>${d.mm.toFixed(1)} mm</b></div>
+        <div>紫外线<b>${d.uv.toFixed(0)}</b></div><div>湿度<b>${d.hum}%</b></div><div>最大风速<b>${d.wind} km/h</b></div></div>
+      <div class="muted">🌅 日出 ${d.sunrise} · 🌇 日落 ${d.sunset}（广州塔看日落建议提前 1 小时上塔）</div>
+      <h3 style="margin-top:12px">逐小时温度 / 降雨</h3>${hourlyChart(d.hourly, 560, 150)}
+    </div><div>
+      <h3>👕 穿衣建议 <span class="lv" style="background:${LV_COLOR[c.level]}">${c.level}</span></h3>
+      <div class="wear"><b>${c.wear}</b></div>
+      ${c.items.length ? `<ul>${c.items.map(t => `<li>${t}</li>`).join("")}</ul>` : ""}
+      <div class="act"><b>出行建议：</b>${GZW.activity(d)}</div>
+      <p><a href="index.html#date=${d.date}">🗺️ 用这一天规划路线（自动带入天气）→</a></p>
+    </div>`;
+}
+function renderTop(data) {
+  const cur = data.current, [t, ic] = GZW.wmo(cur ? cur.weather_code : DAYS[0].code);
+  document.getElementById("now").innerHTML = `<h3>广州 · 现在${data._stale ? "（离线缓存）" : ""}</h3><span class="ic">${ic}</span>
+    <div class="big">${cur ? Math.round(cur.temperature_2m) : DAYS[0].tmax}°</div>
+    <p>${t} · 体感 ${cur ? Math.round(cur.apparent_temperature) : "-"}° · 湿度 ${cur ? cur.relative_humidity_2m : "-"}% · 风 ${cur ? Math.round(cur.wind_speed_10m) : "-"} km/h</p>
+    <p>今天 ${DAYS[0].tmin}–${DAYS[0].tmax}°C · ${GZW.clothing(DAYS[0]).wear}</p>
+    <p style="font-size:12px;opacity:.8">更新于 ${new Date(data._time).toLocaleString("zh-CN", { hour12: false })}</p>`;
+  const ranked = DAYS.map((d, i) => ({ d, i, s: GZW.score(d) })).sort((a, b) => b.s - a.s).slice(0, 3);
+  const rainy = DAYS.filter(GZW.isRainy).map(d => d.wd + " " + d.md);
+  document.getElementById("best").innerHTML = `<h3>🏆 未来 10 天最适合出游</h3>` +
+    ranked.map((r, k) => `<div class="b" data-i="${r.i}">${["🥇", "🥈", "🥉"][k]} ${r.d.wd} ${r.d.md} ${r.d.icon} ${r.d.text} ${r.d.tmin}–${r.d.tmax}° · 指数 ${r.s}</div>`).join("") +
+    `<p>${rainy.length ? "🌧️ 可能下雨：" + rainy.join("、") + "，这几天多安排室内景点" : "☀️ 10 天内没有明显降雨，适合户外"}</p>`;
+  document.querySelectorAll(".best .b").forEach(el => el.onclick = () => { sel = +el.dataset.i; renderDays(); renderDetail(); document.getElementById("detailBox").scrollIntoView({ behavior: "smooth" }); });
+}
+async function load(force) {
+  try {
+    const data = await GZW.getForecast(force); DAYS = GZW.days(data);
+    renderTop(data); document.getElementById("chart").innerHTML = svgChart(DAYS, 1000, 260); renderDays(); renderDetail();
+  } catch (e) { document.getElementById("now").innerHTML = "<h3>天气加载失败</h3><p>请检查网络后点击下方「刷新」</p>"; }
+}
+document.getElementById("refresh").onclick = () => load(true);
+load();
+</script>
+</body>
+</html>

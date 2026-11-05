@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>和宝宝的100天旅游 · 图集</title>
+<script src="js/gate.js"></script>
+<link rel="stylesheet" href="css/style.css">
+<link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#c0392b"><link rel="icon" href="icons/icon.svg">
+<style>
+  body { background: #f6f3ef; height: auto; }
+  .wrap { max-width: 1200px; margin: 0 auto; padding: 20px 16px 40px; }
+  h1 { font-size: 24px; margin: 6px 0 4px; }
+  .intro { color: #777; font-size: 13px; margin: 0 0 14px; }
+  .filters { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+  .filters .chip { font-size: 13px; padding: 5px 14px; }
+  .grid { columns: 3 300px; column-gap: 14px; }
+  .card { break-inside: avoid; margin-bottom: 14px; background: #fff; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,.08); cursor: zoom-in; transition: transform .15s; }
+  .card:hover { transform: translateY(-3px); box-shadow: 0 6px 18px rgba(0,0,0,.15); }
+  .card img { width: 100%; display: block; background: #eee; }
+  .card .cap { padding: 8px 12px 10px; }
+  .card .cap b { font-size: 15px; }
+  .card .cap .g { float: right; font-size: 11px; color: #fff; background: #e67e22; border-radius: 8px; padding: 1px 7px; }
+  .card .cap .by { font-size: 11px; color: #aaa; margin-top: 3px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  #lb { position: fixed; inset: 0; background: rgba(0,0,0,.92); z-index: 5000; display: none; flex-direction: column; align-items: center; justify-content: center; }
+  #lb img { max-width: 92vw; max-height: 78vh; border-radius: 6px; }
+  #lb .info { color: #ddd; text-align: center; margin-top: 12px; font-size: 14px; max-width: 90vw; }
+  #lb .info .by { font-size: 12px; color: #999; margin-top: 4px; }
+  #lb .info a { color: #f39c12; }
+  #lb .nav { position: absolute; top: 50%; transform: translateY(-50%); font-size: 40px; color: #fff; background: none; border: none; cursor: pointer; padding: 20px; }
+  #lb .prev { left: 0; } #lb .next { right: 0; }
+  #lb .close { position: absolute; top: 10px; right: 16px; font-size: 30px; color: #fff; background: none; border: none; cursor: pointer; }
+  footer { color: #999; font-size: 12px; margin-top: 20px; line-height: 1.7; }
+</style>
+</head>
+<body>
+<nav class="topnav">
+  <a class="brand" href="index.html">💕 和宝宝的100天旅游</a>
+  <a class="nav" href="index.html">🗺️ 地图</a>
+  <a class="nav" href="guide.html">📖 攻略</a>
+  <a class="nav" href="weather.html">🌤️ 天气</a>
+  <a class="nav on" href="gallery.html">📷 图集</a>
+</nav>
+<div class="wrap">
+  <h1>📷 看见广州</h1>
+  <p class="intro">出发前先“云逛”一遍：城市地标、岭南古建、街巷烟火、珠江风光和广州味道。点击图片放大，点「在地图上看」直接定位。</p>
+  <div class="filters" id="filters"></div>
+  <div class="grid" id="grid"></div>
+  <footer>
+    图片来源：<a href="https://commons.wikimedia.org" target="_blank">Wikimedia Commons</a>，均为知识共享（CC）或公有领域授权，
+    每张图片的作者与授权协议见图片说明，点击“原图页面”可查看详情。使用时请保留署名并遵守相应协议。
+  </footer>
+</div>
+<div id="lb">
+  <button class="close" title="关闭 (Esc)">✕</button>
+  <button class="nav prev" title="上一张 (←)">‹</button>
+  <img id="lbImg" alt="">
+  <div class="info" id="lbInfo"></div>
+  <button class="nav next" title="下一张 (→)">›</button>
+</div>
+<script src="js/common.js"></script>
+<script src="data/photos.js"></script>
+<script>
+const esc = GZ.esc, PHOTOS = window.PHOTOS || [];
+const GROUPS = ["全部", ...new Set(PHOTOS.map(p => p.group))];
+let group = "全部", shown = [], idx = 0;
+function renderFilters() {
+  const box = document.getElementById("filters"); box.innerHTML = "";
+  GROUPS.forEach(g => { const c = document.createElement("span"); c.className = "chip" + (g === group ? " on" : "");
+    if (g === group) c.style.background = "#c0392b";
+    c.textContent = g + (g === "全部" ? ` (${PHOTOS.length})` : ` (${PHOTOS.filter(p => p.group === g).length})`);
+    c.onclick = () => { group = g; renderFilters(); renderGrid(); }; box.appendChild(c); });
+}
+function renderGrid() {
+  shown = PHOTOS.filter(p => group === "全部" || p.group === group);
+  const grid = document.getElementById("grid"); grid.innerHTML = "";
+  shown.forEach((p, i) => {
+    const c = document.createElement("div"); c.className = "card"; c.id = "p_" + i;
+    c.innerHTML = `<img src="${p.file}" loading="lazy" alt="${esc(p.title)}"><div class="cap"><span class="g">${esc(p.group)}</span><b>${esc(p.title)}</b>
+      <div class="by">© ${esc(p.author)} · ${esc(p.license)}</div></div>`;
+    c.onclick = () => openLb(i); grid.appendChild(c);
+  });
+}
+function openLb(i) {
+  idx = (i + shown.length) % shown.length; const p = shown[idx];
+  document.getElementById("lbImg").src = p.file;
+  document.getElementById("lbInfo").innerHTML = `<b>${esc(p.title)}</b>
+    ${p.spot ? ` · <a href="index.html#spot=${encodeURIComponent(p.spot)}">📍 在地图上看</a>` : ` · <a href="index.html">去地图找美食</a>`}
+    <div class="by">© ${esc(p.author)} · ${esc(p.license)} · <a href="${esc(p.source)}" target="_blank">原图页面</a> · ${idx + 1}/${shown.length}</div>`;
+  document.getElementById("lb").style.display = "flex";
+}
+const lb = document.getElementById("lb");
+lb.querySelector(".close").onclick = () => lb.style.display = "none";
+lb.querySelector(".prev").onclick = e => { e.stopPropagation(); openLb(idx - 1); };
+lb.querySelector(".next").onclick = e => { e.stopPropagation(); openLb(idx + 1); };
+lb.onclick = e => { if (e.target === lb) lb.style.display = "none"; };
+document.addEventListener("keydown", e => { if (lb.style.display !== "flex") return;
+  if (e.key === "Escape") lb.style.display = "none"; if (e.key === "ArrowLeft") openLb(idx - 1); if (e.key === "ArrowRight") openLb(idx + 1); });
+renderFilters(); renderGrid();
+// gallery.html#陈家祠 —— 从地图弹窗跳过来时直接打开对应图片
+const h = decodeURIComponent(location.hash.slice(1));
+if (h) { const i = shown.findIndex(p => p.spot === h || p.title === h); if (i >= 0) setTimeout(() => openLb(i), 200); }
+</script>
+</body>
+</html>
