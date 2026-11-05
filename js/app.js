@@ -138,7 +138,7 @@ function popupHtml(s) {
   const ph = photoOf(s.name), inf = INFO[s.name] || {};
   const amap = `https://uri.amap.com/marker?position=${s.lng},${s.lat}&name=${encodeURIComponent(s.name)}&coordinate=gaode&callnative=1`;
   return `<div class="pop">
-    ${ph ? `<img src="${ph.file}" title="点击查看图集" onclick="location.href='gallery.html#${encodeURIComponent(s.name)}'">` : ""}
+    ${ph ? `<img src="${ph.file.replace("photos/", "photos/thumb/")}" title="点击查看图集" onclick="location.href='gallery.html#${encodeURIComponent(s.name)}'">` : ""}
     <h4>${s.fav ? "⭐ " : ""}${esc(s.name)}${s.top ? ' <span style="color:#c0392b;font-size:12px">🔥必去</span>' : ""}</h4>
     <span class="tag" style="background:${colorOf(s)}">${esc(s.district)}</span><span class="tag" style="background:${s.cat === "美食" ? "#f39c12" : "#e67e22"}">${esc(s.cat)}</span>
     <span class="muted">建议停留 ${stayOf(s)} 分钟</span>

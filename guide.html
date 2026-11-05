@@ -187,7 +187,7 @@ const box = document.getElementById("routeBlocks");
   box.appendChild(d);
 });
 const foods = (window.PHOTOS || []).filter(p => p.group === "广州味道");
-document.getElementById("foodCards").innerHTML = foods.map(p => `<div class="fcard"><img src="${p.file}" loading="lazy" alt="${esc(p.title)}">
+document.getElementById("foodCards").innerHTML = foods.map(p => `<div class="fcard"><img src="${p.file.replace("photos/", "photos/thumb/")}" loading="lazy" alt="${esc(p.title)}">
   <div><b>${esc(p.title)}</b><br><span class="muted" style="font-size:10px">© ${esc(p.author)} · ${esc(p.license)}</span></div></div>`).join("");
 </script>
 </body>

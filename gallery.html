@@ -76,7 +76,7 @@ function renderGrid() {
   const grid = document.getElementById("grid"); grid.innerHTML = "";
   shown.forEach((p, i) => {
     const c = document.createElement("div"); c.className = "card"; c.id = "p_" + i;
-    c.innerHTML = `<img src="${p.file}" loading="lazy" alt="${esc(p.title)}"><div class="cap"><span class="g">${esc(p.group)}</span><b>${esc(p.title)}</b>
+    c.innerHTML = `<img src="${p.file.replace("photos/", "photos/thumb/")}" loading="lazy" alt="${esc(p.title)}"><div class="cap"><span class="g">${esc(p.group)}</span><b>${esc(p.title)}</b>
       <div class="by">© ${esc(p.author)} · ${esc(p.license)}</div></div>`;
     c.onclick = () => openLb(i); grid.appendChild(c);
   });

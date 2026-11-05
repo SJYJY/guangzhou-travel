@@ -1,6 +1,6 @@
 // 离线缓存（仅在 https / localhost 下生效，例如部署到 GitHub Pages 后）
 // 改了网站文件后把 VER 加 1，用户刷新即可拿到新版
-const VER = "gz-v2";
+const VER = "gz-v3";
 const CORE = ["./", "index.html", "guide.html", "gallery.html", "weather.html", "css/style.css",
   "js/common.js", "js/gate.js", "js/app.js", "js/weather.js", "data/spots.js", "data/info.js", "data/routes.js", "data/photos.js",
   "lib/leaflet.js", "lib/leaflet.css", "manifest.webmanifest", "icons/icon.svg", "icons/icon-192.png", "icons/icon-512.png"];
